@@ -39,6 +39,8 @@ jobs:
       run: make
 
     - name: Run tests
+      env:
+        CC: ${{ matrix.compiler }}
       run: make test
 
     - name: Clean

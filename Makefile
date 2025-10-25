@@ -1,7 +1,7 @@
 # Makefile for Unified Moop
 # Minimal, elegant build system for evolutionary tape-loop Turing machine
 
-CC = gcc
+CC ?= gcc
 CFLAGS = -Wall -Wextra -Werror -std=c11 -O2 -g
 LIBS = -lm
 
