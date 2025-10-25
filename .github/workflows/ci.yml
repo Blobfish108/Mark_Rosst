@@ -25,23 +25,32 @@ jobs:
     - name: Setup compiler
       if: runner.os == 'Linux'
       run: |
+        echo "Setting up ${{ matrix.compiler }} on Linux"
+        sudo apt-get update -qq
         if [ "${{ matrix.compiler }}" = "gcc" ]; then
-          sudo apt-get update
-          sudo apt-get install -y gcc
+          sudo apt-get install -y gcc build-essential
         elif [ "${{ matrix.compiler }}" = "clang" ]; then
-          sudo apt-get update
           sudo apt-get install -y clang
         fi
+        ${{ matrix.compiler }} --version
 
     - name: Build
       env:
         CC: ${{ matrix.compiler }}
-      run: make
+      run: |
+        echo "CC is set to: $CC"
+        echo "Running make..."
+        make
+        echo "Build completed"
 
     - name: Run tests
       env:
         CC: ${{ matrix.compiler }}
-      run: make test
+      run: |
+        echo "CC is set to: $CC"
+        echo "Running make test..."
+        make test
+        echo "Tests completed"
 
     - name: Clean
       run: make clean
