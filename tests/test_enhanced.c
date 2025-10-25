@@ -1,6 +1,7 @@
 // test_enhanced.c
 // Comprehensive test of all 5 enhanced Moop features
 
+#define _POSIX_C_SOURCE 200809L
 #include "../src/moop_enhanced.h"
 #include <stdio.h>
 #include <stdlib.h>
