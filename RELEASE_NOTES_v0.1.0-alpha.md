@@ -5,9 +5,34 @@
 
 ## Overview
 
-Initial release of **Unified Moop** - an evolutionary tape-loop Turing machine with actor-proto duality. This is a minimal, elegant implementation of computational self-organization in ~680 lines of C.
+Initial release of **Unified Moop** - a programming language that combines **Quorum's naturalism** with **Io's minimalism**, creating an unmatched clean syntax that reads like structured English.
+
+Built on an evolutionary tape-loop Turing machine with actor-proto duality, Moop delivers the elegance of natural language with the power of computational self-organization in ~680 lines of C.
+
+### The Moop Experience
+
+Write code that looks like structured English:
+
+```moop
+actor UserManager
+    role is "handles user authentication and sessions"
+    state has
+        logged_in is false
+
+proto DatabaseConnection <- Object
+    slots: host, port, timeout
+```
+
+No ceremony. No syntactic noise. Just clear, readable computation.
 
 ## 🎯 Key Features
+
+### Language Design
+- **Natural Language Syntax** - Quorum's naturalism + Io's minimalism
+- **Structured English** - Code reads like plain English sentences
+- **Zero Ceremony** - No boilerplate, no syntactic noise
+- **Actor-Proto Model** - Message-passing with prototype inheritance
+- **Unified Primitives** - One coordination model, infinite expressiveness
 
 ### Core Architecture
 - **6-Sublayer Design** (L1-L3b) with clear separation of concerns
@@ -15,7 +40,6 @@ Initial release of **Unified Moop** - an evolutionary tape-loop Turing machine w
 - **Evolutionary Pruning** - Darwinian selection pressure on operations
 - **Trinary MAYBE Logic** - True/False/Unresolved with confidence scoring
 - **Self-Modification API** - True homoiconicity (code-as-data)
-- **Actor-Proto Duality** - Unified coordination primitive
 - **Meta-Evolution** - System can tune its own fitness parameters
 
 ### Performance

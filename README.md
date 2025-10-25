@@ -1,13 +1,30 @@
 # Unified Moop
 
-**A minimal, elegant implementation of evolutionary tape-loop Turing machine with actor-proto duality**
+**Code that reads like structured English • Quorum's naturalism + Io's minimalism**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
+## The Moop Experience
+
+Write clean, natural code:
+
+```moop
+actor UserManager
+    role is "handles user authentication and sessions"
+    state has
+        logged_in is false
+
+proto DatabaseConnection <- Object
+    slots: host, port, timeout
+```
+
+**No ceremony. No syntactic noise. Just clear computation.**
+
 ## Overview
 
-Unified Moop implements a **6-sublayer architecture** in ~900 lines of C, featuring:
+Unified Moop combines natural language elegance with computational power through a **6-sublayer architecture** in ~900 lines of C:
 
+- **Natural Language Syntax** - Code reads like structured English
 - **Tape-Loop Turing Machine** (1024 circular cells, L1)
 - **Evolutionary Pruning** with Darwinian selection pressure
 - **Trinary MAYBE** (True/False/Unresolved) with LLM confidence
