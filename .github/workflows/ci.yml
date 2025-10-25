@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        compiler: [gcc, clang]
+        exclude:
+          # macOS uses clang by default
+          - os: macos-latest
+            compiler: gcc
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup compiler
+      if: runner.os == 'Linux'
+      run: |
+        if [ "${{ matrix.compiler }}" = "gcc" ]; then
+          sudo apt-get update
+          sudo apt-get install -y gcc
+        elif [ "${{ matrix.compiler }}" = "clang" ]; then
+          sudo apt-get update
+          sudo apt-get install -y clang
+        fi
+
+    - name: Build
+      env:
+        CC: ${{ matrix.compiler }}
+      run: make
+
+    - name: Run tests
+      run: make test
+
+    - name: Clean
+      run: make clean
+
+  code-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Check for trailing whitespace
+      run: |
+        ! git grep -I --line-number --perl-regexp '\s+$' -- '*.c' '*.h'
+
+    - name: Check line count (keep it minimal!)
+      run: |
+        total_lines=$(find src -name "*.c" -o -name "*.h" | xargs wc -l | tail -1 | awk '{print $1}')
+        echo "Total lines of code: $total_lines"
+        if [ "$total_lines" -gt 1200 ]; then
+          echo "Error: Code exceeds 1200 lines (found $total_lines)"
+          echo "Moop is about minimalism!"
+          exit 1
+        fi
