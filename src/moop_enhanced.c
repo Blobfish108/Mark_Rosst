@@ -1,6 +1,7 @@
 // moop_enhanced.c
 // Enhanced Unified Moop Implementation (~450 lines with all improvements)
 
+#define _POSIX_C_SOURCE 200809L
 #include "moop_enhanced.h"
 #include <stdlib.h>
 #include <string.h>
