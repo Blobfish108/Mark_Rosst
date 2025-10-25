@@ -29,10 +29,10 @@ all: $(BUILDDIR) $(TEST_TARGET)
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 
-$(BUILDDIR)/moop_enhanced.o: $(SRCDIR)/moop_enhanced.c $(SRCDIR)/moop_enhanced.h
+$(BUILDDIR)/moop_enhanced.o: $(SRCDIR)/moop_enhanced.c $(SRCDIR)/moop_enhanced.h | $(BUILDDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(TEST_TARGET): $(TEST_SRCS) $(CORE_OBJS)
+$(TEST_TARGET): $(TEST_SRCS) $(CORE_OBJS) | $(BUILDDIR)
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 test: $(TEST_TARGET)
