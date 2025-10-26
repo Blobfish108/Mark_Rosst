@@ -8,30 +8,33 @@
 
 ## The Six Sublayers
 
-### L1: System-Based Processing
+### L1: Tape-Loop Turing Machine with Primitive Gates
 
-**Purpose**: Hardware foundation, bare metal execution
+**Purpose**: Computational substrate with primitive reversible gates
 
 **Properties**:
 - System-based (lowest level)
-- Interfaces with hardware (M1, RISC-V, etc.)
-- No user access
+- 1024 circular cells (tape-loop)
+- Evolutionary pruning
+- Primitive gates: CCNOT, CNOT, NOT, SWAP
+- Turing-complete
+- Homoiconic
 
-**Implementation**: Assembly or bootloader
+**Implementation**: Tape-loop with primitive gate operations
 
 ---
 
 ### L2a: System Processing, Reversible
 
-**Purpose**: Reversible gate substrate (the 4 primitives)
+**Purpose**: Non-primitive reversible functions, structural reversibility
 
 **Properties**:
 - System-facing
-- Reversible (CCNOT, CNOT, NOT, SWAP)
-- Turing-complete
-- Homoiconic
+- Higher-level reversible operations
+- Structural reversibility (bindings, relationships)
+- Built on L1 primitive gates
 
-**Implementation**: On top of L1 hardware
+**Implementation**: Reversible abstractions using L1 primitives
 
 ---
 
@@ -43,7 +46,7 @@
 - System-facing
 - Irreversible (information-destroying)
 - **High priority** (critical operations)
-- Implemented via L2a reversible gates
+- Implemented via L1 primitive gates
 
 **Key insight**: This is the **D-layer gates** but at **system priority**.
 
@@ -55,10 +58,10 @@
 
 **Properties**:
 - User-facing
-- Uses L2a (reversible) and L2b (irreversible) gates
+- Uses L1 (primitives), L2a (reversible functions), and L2b (irreversible ops)
 - Normal priority
 
-**Implementation**: User programs compile to L2a/L2b gates
+**Implementation**: User programs compile to L1/L2a/L2b operations
 
 ---
 
@@ -105,10 +108,11 @@
 │ L2b: System Processing, Irreversible│  AND, OR, NAND, NOR, XOR, MAYBE
 │     (high priority)                 │  Critical operations
 ├─────────────────────────────────────┤
-│ L2a: System Processing, Reversible  │  CCNOT, CNOT, NOT, SWAP
-│     (homoiconic, Turing-complete)   │  Reversible substrate
+│ L2a: System Processing, Reversible  │  Non-primitive reversible functions
+│     (structural reversibility)      │  Higher-level abstractions
 ├─────────────────────────────────────┤
-│ L1: System-Based Processing         │  Hardware (M1 assembly, RISC-V)
+│ L1: Tape-Loop TM                    │  1024 cells, evolutionary pruning
+│     (homoiconic, Turing-complete)   │  CCNOT, CNOT, NOT, SWAP
 │     (bare metal)                    │  Bootloader
 └─────────────────────────────────────┘
 ```
@@ -137,7 +141,7 @@
 - Used by user programs frequently
 - Must be fast and reliable
 
-**Implementation**: Optimized paths to L2a reversible gates.
+**Implementation**: Optimized paths to L1 primitive gates.
 
 ### 3. L3a Handles Bootstrap
 
@@ -158,19 +162,23 @@ L3b uses:
 
 ## Primitive Distribution
 
-### L1: 0 primitives
-- Hardware interface
-- Bootloader
-
-### L2a: 4 primitives (reversible gates)
+### L1: 4 primitives (reversible gates)
 ```
 CCNOT, CNOT, NOT, SWAP
 ```
+- Tape-loop substrate (1024 circular cells)
+- Evolutionary pruning
+- Turing-complete computational foundation
+
+### L2a: 0 primitives (higher-level reversible functions)
+- Non-primitive reversible operations
+- Structural reversibility
+- Built on L1 primitives
 
 ### L2b: 0 primitives (emergent, high priority)
 ```
 AND, OR, NAND, NOR, XOR, MAYBE
-(implemented via L2a)
+(implemented via L1 primitives)
 ```
 
 ### L2c: 0 primitives
@@ -184,7 +192,7 @@ coordination_primitive (creates root_actor, root_proto)
 ### L3b: 0 primitives
 - User actors/protos (descend from L3a roots)
 
-**Total**: 5 primitives (4 at L2a + 1 at L3a)
+**Total**: 5 primitives (4 at L1 + 1 at L3a)
 
 ---
 
@@ -214,17 +222,18 @@ coordination_primitive (creates root_actor, root_proto)
 ### Option 1: C Bootstrap (Recommended)
 
 ```c
-// L1: Bootstrap in C (compiles to M1 assembly)
-void l1_boot() {
-    // Initialize hardware
-}
+// L1: Tape-loop with primitive gates
+void l1_CCNOT(uint8_t a, uint8_t b, uint8_t c) { ... }
+void l1_CNOT(uint8_t a, uint8_t b) { ... }
+void l1_NOT(uint8_t a) { ... }
+void l1_SWAP(uint8_t a, uint8_t b) { ... }
 
-// L2a: Reversible gates in C
-void l2a_CCNOT(uint8_t a, uint8_t b, uint8_t c) { ... }
+// L2a: Non-primitive reversible functions
+void l2a_structural_bind(void* a, void* b) { ... }
 
 // L2b: High-priority irreversible gates
 void l2b_AND(uint8_t a, uint8_t b, uint8_t result) {
-    // Fast path to L2a
+    // Fast path to L1 primitives
 }
 
 // L3a: System bootstrap
@@ -241,14 +250,18 @@ void l3a_bootstrap() {
 ### Option 2: M1 Assembly
 
 ```asm
-// L1: Direct M1 assembly
-_l1_boot:
-    // Initialize M1 hardware
+// L1: Tape-loop with primitive gates in assembly
+_l1_CCNOT:
+    // Hand-optimized primitive gate
     ret
 
-// L2a: Reversible gates in assembly
-_l2a_CCNOT:
-    // Hand-optimized gate
+_l1_CNOT:
+    // Hand-optimized primitive gate
+    ret
+
+// L2a: Non-primitive reversible functions
+_l2a_structural_bind:
+    // Higher-level reversible operation
     ret
 ```
 
@@ -269,8 +282,8 @@ _l2a_CCNOT:
 ### Layer Implementation Strategy
 
 ```
-L1:   M1 assembly (bootloader, ~50 lines)
-L2a:  C with inline assembly (gates, ~80 lines)
+L1:   C with inline assembly (tape-loop + primitive gates, ~130 lines)
+L2a:  C (non-primitive reversible functions, ~50 lines)
 L2b:  C (high-priority operations, ~40 lines)
 L2c:  C runtime (user code host)
 L3a:  C (bootstrap dual, ~30 lines)
@@ -280,8 +293,8 @@ L3b:  C runtime (user actors/protos)
 **Total**: ~200 lines of C + ~50 lines of M1 assembly
 
 **Advantages**:
-- Fast L1 boot (assembly)
-- Optimized L2a gates (C + inline assembly)
+- Optimized L1 primitive gates (C + inline assembly)
+- Higher-level L2a reversible functions (C)
 - Portable L2b/L3 (C)
 - Tight implementation
 
@@ -289,10 +302,11 @@ L3b:  C runtime (user actors/protos)
 
 ## The Refined Primitive Count
 
-### L2a: 4 reversible primitives
+### L1: 4 reversible primitives
 ```
 CCNOT, CNOT, NOT, SWAP
 ```
+(The tape-loop substrate with primitive gates)
 
 ### L3a: 1 coordination primitive (dual)
 ```
@@ -312,8 +326,8 @@ coordination_primitive
 
 ```
 moop/
-├── l1_boot.s          # M1 assembly bootloader (~50 lines)
-├── l2a_gates.c        # Reversible gates (~80 lines)
+├── l1_tape_loop.c     # Tape-loop + primitive gates (~130 lines)
+├── l2a_reversible.c   # Non-primitive reversible functions (~50 lines)
 ├── l2b_ops.c          # High-priority irreversible ops (~40 lines)
 ├── l2c_runtime.c      # User code runtime
 ├── l3a_bootstrap.c    # System bootstrap dual (~30 lines)
@@ -351,9 +365,9 @@ typedef struct {
 ## Bootstrap Sequence
 
 ```
-1. L1 boots (M1 assembly)
+1. L1 initializes (tape-loop + primitive gates ready)
     ↓
-2. L2a initializes (reversible gates ready)
+2. L2a initializes (non-primitive reversible functions ready)
     ↓
 3. L2b initializes (irreversible ops ready)
     ↓
@@ -372,14 +386,14 @@ typedef struct {
 
 The refined structure has **6 sublayers**:
 
-- **L1**: Hardware/bootloader
-- **L2a**: Reversible gates (4 primitives)
+- **L1**: Tape-loop TM with primitive gates (4 primitives: CCNOT, CNOT, NOT, SWAP)
+- **L2a**: Non-primitive reversible functions (structural reversibility)
 - **L2b**: Irreversible ops (high priority, emergent)
 - **L2c**: User code runtime
 - **L3a**: Bootstrap coordination (1 primitive)
 - **L3b**: User actors/protos
 
-**Total**: 5 primitives, highly refined separation of concerns.
+**Total**: 5 primitives (4 at L1 + 1 at L3a), highly refined separation of concerns.
 
 **Implementation**: ~200 lines C + ~50 lines M1 assembly.
 

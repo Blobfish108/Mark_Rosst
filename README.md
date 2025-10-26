@@ -143,8 +143,8 @@ L3b: User Actors/Protos     ← Application layer
 L3a: System Bootstrap        ← Actor-proto duality genesis
 L2c: User Processing         ← (Reserved)
 L2b: Irreversible Ops        ← AND, OR, XOR, MAYBE resolution
-L2a: Reversible Functions    ← CCNOT, CNOT, NOT, SWAP
-L1:  Tape-Loop TM            ← 1024 circular cells, evolutionary pruning
+L2a: Reversible Functions    ← Non-primitive reversible functions, structural reversibility
+L1:  Tape-Loop TM            ← 1024 circular cells, evolutionary pruning, CCNOT, CNOT, NOT, SWAP
 ```
 
 ## Key Features
