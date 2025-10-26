@@ -93,6 +93,54 @@ Moop is designed as a **complex adaptive system** following Prigogine's dissipat
 
 **Your program becomes an organism** that adapts, evolves, and optimizes itself.
 
+### Perfect for Embedded Systems
+
+Moop combines **gate-based computational substrate** with **lean conventional memory** for an ideal embedded profile:
+
+**Dual Memory Architecture:**
+
+1. **System layer (L1)**: Gate-based tape-loop
+   - 1024 circular cells (fixed size)
+   - Reversible gate operations (CCNOT, CNOT, NOT, SWAP)
+   - Evolutionary pruning (automatic cleanup)
+   - No dynamic allocation in computational substrate
+
+2. **User layer (L3b)**: Conventional memory for actor state and proto slots
+   - Managed by lean C runtime
+   - No garbage collector
+   - Predictable allocation patterns
+
+**Why Moop excels in embedded environments:**
+
+- ✅ **Small footprint** - ~40KB total runtime (tape + qubit state + runtime)
+- ✅ **No garbage collector** - No unpredictable GC pauses
+- ✅ **Deterministic behavior** - Pruning every 256 ops, O(1) fitness computation
+- ✅ **Fixed computational memory** - 1024-cell tape never grows
+- ✅ **Lean C implementation** - ~680 lines, compiles to bare metal
+- ✅ **Self-managing substrate** - Evolutionary pruning handles tape cleanup automatically
+
+**This makes Moop ideal for:**
+- Embedded systems (IoT, microcontrollers, sensors)
+- Real-time systems (no GC pauses, deterministic timing)
+- Resource-constrained environments (fixed computational memory)
+- Safety-critical applications (predictable behavior, no hidden allocations)
+
+**Comparison:**
+
+| Language | Runtime Size | GC Pauses | Deterministic | Computational Memory |
+|----------|--------------|-----------|---------------|----------------------|
+| Python | ~15MB | Yes | No | Heap (unbounded) |
+| Java | ~50MB | Yes | No | Heap (unbounded) |
+| Go | ~2MB | Yes | No | Heap (unbounded) |
+| Rust | ~500KB | No | Yes | Heap (manual) |
+| C | Variable | No | Yes* | Heap (malloc) |
+| Forth | ~10KB | No | Yes | Stack (fixed) |
+| **Moop** | **~40KB** | **No** | **Yes** | **Tape (1024 cells, self-managing)** |
+
+*C is deterministic only if you avoid malloc/free
+
+**Key advantage:** Moop's computational substrate (L1 tape-loop) is **self-managing** through evolutionary pruning, while user memory remains simple and predictable.
+
 ### Core Architecture
 - **6-Sublayer Design** (L1-L3b) with clear separation of concerns
 - **Tape-Loop Turing Machine** - 1024 circular cells with automatic wrapping

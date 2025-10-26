@@ -83,6 +83,70 @@ Moop is designed following **Prigogine's dissipative structures** - it's not jus
 **Traditional languages:** Static artifacts you manually optimize.
 **Moop:** Living organisms that adapt and evolve.
 
+## Perfect for Embedded Systems
+
+Moop combines **gate-based computational substrate** with **lean conventional memory** for an ideal embedded profile:
+
+**Dual Memory Architecture:**
+
+1. **System layer (L1)**: Gate-based tape-loop
+   - 1024 circular cells (fixed size)
+   - Reversible gate operations (CCNOT, CNOT, NOT, SWAP)
+   - Evolutionary pruning (automatic cleanup)
+   - No dynamic allocation in computational substrate
+
+2. **User layer (L3b)**: Conventional memory for actor state and proto slots
+   - Managed by lean C runtime
+   - No garbage collector
+   - Predictable allocation patterns
+
+**Why Moop excels in embedded environments:**
+
+- ✅ **Small footprint** - ~40KB total runtime (tape + qubit state + runtime)
+- ✅ **No garbage collector** - No unpredictable GC pauses
+- ✅ **Deterministic behavior** - Pruning every 256 ops, O(1) fitness computation
+- ✅ **Fixed computational memory** - 1024-cell tape never grows
+- ✅ **Lean C implementation** - ~680 lines, compiles to bare metal
+- ✅ **Self-managing substrate** - Evolutionary pruning handles tape cleanup automatically
+
+```moop
+actor SensorController
+    state has
+        readings is []           # User memory: conventional allocation
+        last_value is 0
+
+    handlers
+    on process_sensor_data(value)
+        # Computation happens on L1 gate-based tape
+        result <-> analyze(value)
+
+        # State updates use conventional memory
+        state.readings.append(result)
+        state.last_value = result
+```
+
+**This makes Moop ideal for:**
+- Embedded systems (IoT, microcontrollers, sensors)
+- Real-time systems (no GC pauses, deterministic timing)
+- Resource-constrained environments (fixed computational memory)
+- Safety-critical applications (predictable behavior, no hidden allocations)
+
+**Comparison:**
+
+| Language | Runtime Size | GC Pauses | Deterministic | Computational Memory |
+|----------|--------------|-----------|---------------|----------------------|
+| Python | ~15MB | Yes | No | Heap (unbounded) |
+| Java | ~50MB | Yes | No | Heap (unbounded) |
+| Go | ~2MB | Yes | No | Heap (unbounded) |
+| Rust | ~500KB | No | Yes | Heap (manual) |
+| C | Variable | No | Yes* | Heap (malloc) |
+| Forth | ~10KB | No | Yes | Stack (fixed) |
+| **Moop** | **~40KB** | **No** | **Yes** | **Tape (1024 cells, self-managing)** |
+
+*C is deterministic only if you avoid malloc/free
+
+**Key advantage:** Moop's computational substrate (L1 tape-loop) is **self-managing** through evolutionary pruning, while user memory remains simple and predictable.
+
 ## Quick Start
 
 ### Build
