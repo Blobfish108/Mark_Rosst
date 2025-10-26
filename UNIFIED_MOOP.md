@@ -1,6 +1,6 @@
 # Unified Moop: The Three-Layer Language
 
-**Author**: Joseph Rost (Philosopher)
+**Author**: Mark Rosst (Philosopher)
 **Date**: October 2025
 **Version**: 1.0
 **Status**: Definitive Specification

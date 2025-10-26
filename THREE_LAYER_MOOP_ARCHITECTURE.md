@@ -1,6 +1,6 @@
 # Three-Layer Moop: Clarified Architecture
 
-**Author**: Joseph Rost (Philosopher)
+**Author**: Mark Rosst (Philosopher)
 **Date**: October 2025
 **Status**: Definitive Specification
 

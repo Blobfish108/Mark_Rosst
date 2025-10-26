@@ -1,6 +1,6 @@
 # Primitive Duality: Actor and Proto as One
 
-**Author**: Joseph Rost (Philosopher)
+**Author**: Mark Rosst (Philosopher)
 **Date**: October 2025
 
 ---

@@ -1,6 +1,6 @@
 # Refined Moop Layer Structure
 
-**Author**: Joseph Rost (Philosopher)
+**Author**: Mark Rosst (Philosopher)
 **Date**: October 2025
 **Status**: Refined Architecture
 
