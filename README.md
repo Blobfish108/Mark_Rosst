@@ -99,47 +99,42 @@ make test
 
 ### Example Usage
 
-```c
-#include "src/moop_enhanced.h"
+```moop
+actor Calculator
+    role is "Performs calculations with evolutionary optimization"
 
-int main() {
-    // Initialize Moop runtime with 16 qubits
-    Moop_Runtime* moop = moop_init(16, 1);
-    if (!moop) return 1;
+    state has
+        history is []
+        last_result is 0
 
-    // Execute reversible operations
-    l2a_NOT(moop->l2a, 0);
-    l2a_CNOT(moop->l2a, 0, 1);
-    l2a_CCNOT(moop->l2a, 0, 1, 2);
+    handlers
 
-    // Create checkpoint (auto-marked essential, never pruned)
-    uint32_t checkpoint = l2a_checkpoint(moop->l2a);
+    on compute(operation, args)
+        # Reversible computation
+        result <-> perform_operation(operation, args)
 
-    // Self-modification: read tape
-    R_Cell cell = l2a_read_tape(moop->l2a, 0);
-    printf("Tape[0]: gate=%u, a=%u, b=%u\n",
-           cell.gate, cell.a, cell.b);
+        # Update state (irreversible)
+        state.last_result = result
+        state.history.append({op: operation, result: result})
 
-    // Inspect evolutionary fitness
-    Tape_Stats stats = l2a_get_tape_stats(moop->l2a);
-    printf("Avg fitness: %.2f, Essential: %u\n",
-           stats.avg_fitness, stats.essential_count);
+        # Output (irreversible)
+        output -> "Result: " + result
 
-    // Meta-evolution: tune fitness parameters
-    Fitness_Params params = {
-        .recency_weight = 0.6f,
-        .activity_weight = 0.3f,
-        .gate_weight = 0.1f,
-        .prune_interval = 512,
-        .prune_threshold = 0.8f
-    };
-    l2a_tune_fitness(moop->l2a, params);
+    on undo
+        # Reversibility: can rewind to previous state
+        if history.length > 0
+            state.history.pop()
+            restore_checkpoint(history.length)
 
-    // Cleanup
-    moop_free(moop);
-    return 0;
-}
+    on optimize_self
+        # Meta-evolution: tune fitness parameters
+        params <- get_fitness_params()
+        params.recency_weight = 0.6
+        params.activity_weight = 0.3
+        tune_fitness(params)
 ```
+
+**Note:** This is Moop language syntax. The v0.1.0-alpha release includes a C implementation runtime. Full Moop parser/compiler coming in future releases.
 
 ## Architecture
 
@@ -165,39 +160,65 @@ Selection pressure: Top 75% survive, bottom 25% discarded every 256 operations
 
 ### 2. Trinary MAYBE
 
-```c
-L2b_Maybe m = l2b_maybe_create("user_authenticated");
-l2b_maybe_resolve(&m, true, 0.95f, "JWT token valid");
+```moop
+actor AuthService
+    on authenticate(username, password)
+        # MAYBE: uncertain value with confidence
+        maybe user_authenticated is check_credentials(username, password)
 
-if (l2b_maybe_get_state(&m) == MAYBE_TRUE) {
-    // Proceed with confidence
-}
+        when user_authenticated is true:
+            session <- create_session(username)
+            output -> "Login successful (confidence: " + user_authenticated.confidence + ")"
+
+        when user_authenticated is false:
+            output -> "Login failed"
+
+        otherwise:
+            # Still uncertain (e.g., awaiting 2FA)
+            output -> "Awaiting multi-factor authentication"
+            output -> "Reasoning: " + user_authenticated.reasoning
 ```
 
 ### 3. Self-Modification
 
-```c
-// Read operation from tape
-R_Cell op = l2a_read_tape(runtime, 100);
+```moop
+actor SelfOptimizer
+    on modify_algorithm
+        # Read code from tape (homoiconicity)
+        operation <- tape.read(100)
 
-// Modify it
-op.gate = 1;  // Change to CNOT
-l2a_write_tape(runtime, 100, op);
+        # Modify it (self-modification)
+        operation.gate = SWAP
+        tape.write(100, operation)
 
-// Meta-modify entire tape
-R_Cell rule[] = {{2, 0, 0, 0}};  // NOT(0)
-l2a_meta_modify(runtime, rule, 1);
+        # Test the modification (reversibly)
+        checkpoint <- tape.checkpoint()
+        result <-> execute_modified_code()
+
+        # Don't like it? Rewind!
+        if result.performance < threshold
+            tape.restore(checkpoint)
 ```
 
 ### 4. Meta-Evolution
 
-The system can tune its own fitness parameters:
+```moop
+actor EvolutionarySystem
+    on adapt_to_workload
+        # System tunes its own evolution (meta-evolution)
+        params <- get_fitness_params()
 
-```c
-Fitness_Params params = l2a_get_fitness_params(runtime);
-params.recency_weight = 0.7f;  // Favor recent ops more
-l2a_tune_fitness(runtime, params);
+        # Adjust selection pressure based on usage patterns
+        params.recency_weight = 0.7    # Favor recent operations more
+        params.activity_weight = 0.2
+        params.gate_weight = 0.1
+
+        tune_fitness(params)
+
+        output -> "System adapted to workload"
 ```
+
+The system evolves how it evolves!
 
 ## Documentation
 
