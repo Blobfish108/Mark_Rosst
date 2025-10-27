@@ -24,6 +24,7 @@ proto DatabaseConnection <- Object
 
 Unified Moop combines natural language elegance with computational power through a **6-sublayer architecture** in ~900 lines of C:
 
+- **Quantum-Ready Architecture** - Classical by default, quantum-compatible by design
 - **Natural Language Syntax** - Code reads like structured English
 - **Tape-Loop Turing Machine** (1024 circular cells, L1)
 - **Evolutionary Pruning** with Darwinian selection pressure
@@ -146,6 +147,97 @@ actor SensorController
 *C is deterministic only if you avoid malloc/free
 
 **Key advantage:** Moop's computational substrate (L1 tape-loop) is **self-managing** through evolutionary pruning, while user memory remains simple and predictable.
+
+## Quantum-Ready Architecture
+
+Moop is designed to run on **conventional hardware by default**, but with full compatibility for **future quantum backends**. This is achieved through a clean abstraction layer that separates gate operations from state representation.
+
+### How It Works
+
+**Backend Abstraction:**
+```c
+// Same gate API works on any backend
+qubit_CNOT(state, control, target);  // Classical OR quantum
+
+// Three available backends:
+typedef enum {
+    QUBIT_BACKEND_CLASSICAL,    // Default: uint8_t bits (fast, conventional)
+    QUBIT_BACKEND_SIMULATOR,    // Optional: statevector simulation
+    QUBIT_BACKEND_QUANTUM       // Future: real quantum hardware
+} Qubit_Backend_Type;
+```
+
+**Why This Matters:**
+
+Moop uses **reversible gates** (CCNOT, CNOT, NOT, SWAP) as computational primitives. These gates are:
+- ✅ Efficient on conventional hardware (simple bit operations)
+- ✅ Natively compatible with quantum computers (unitary operations)
+- ✅ Mathematically universal (can compute any function)
+
+**Key Insight:** By building on reversible primitives from day one, Moop programs written today will run on quantum hardware tomorrow **without modification**.
+
+### Three Backends, Same Code
+
+**1. Classical Backend (Default)**
+```c
+// Fast, deterministic, works everywhere
+Qubit_State* state = qubit_init(32, QUBIT_BACKEND_CLASSICAL);
+qubit_CCNOT(state, 0, 1, 2);  // Simple bit operations
+uint8_t result = qubit_read(state, 2);  // Direct read
+```
+
+**2. Quantum Simulator (Optional)**
+```c
+// Enable with: make CFLAGS="-DENABLE_QUANTUM_SIMULATOR"
+Qubit_State* state = qubit_init(10, QUBIT_BACKEND_SIMULATOR);
+qubit_CCNOT(state, 0, 1, 2);  // Statevector evolution (2^n amplitudes)
+uint8_t result = qubit_measure(state, 2);  // Probabilistic collapse
+```
+
+**3. Quantum Hardware (Future)**
+```c
+// When quantum computers are accessible
+Qubit_State* state = qubit_init(100, QUBIT_BACKEND_QUANTUM);
+qubit_CCNOT(state, 0, 1, 2);  // Runs on real QPU
+uint8_t result = qubit_measure(state, 2);  // True quantum measurement
+```
+
+### The Same Moop Code
+
+**All three backends run the same high-level Moop code:**
+
+```moop
+actor QuantumCalculator
+    role is "performs calculations using quantum-ready gates"
+
+    handlers
+    on compute(a, b)
+        # These operations work on ANY backend
+        result <-> CCNOT(a, b, output)
+
+        # Classical: fast bit ops
+        # Quantum simulator: statevector evolution
+        # Quantum hardware: real superposition
+
+        output -> "Result: " + result
+```
+
+### Benefits
+
+**Today:**
+- Run on any conventional computer (x86, ARM, RISC-V, microcontrollers)
+- Fast execution using classical bits
+- No special hardware required
+
+**Tomorrow:**
+- Same programs run on quantum computers when available
+- No code changes needed
+- Gradual migration path (classical → simulator → quantum hardware)
+
+**Philosophy:**
+> "Write for conventional hardware today. Run on quantum hardware tomorrow."
+
+This makes Moop uniquely positioned for the **quantum transition** - your investment in Moop code today will pay dividends when quantum computing becomes mainstream.
 
 ## Quick Start
 

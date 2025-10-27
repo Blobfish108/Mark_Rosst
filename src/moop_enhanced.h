@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "moop_quantum_ready.h"  // Quantum-ready abstraction layer
 
 // ============================================================================
 // L1/L2a: Tape-Loop Turing Machine (Enhanced)
@@ -39,7 +40,7 @@ typedef struct {
 
 // Enhanced L2a Runtime: Tape-Loop with evolutionary pruning
 typedef struct {
-    uint8_t* qubits;           // Qubit states
+    Qubit_State* qubit_state;  // Backend-agnostic qubit state (classical or quantum)
     Tape_Entry* tape;          // Circular tape with fitness (1024 entries)
     uint32_t tape_head;        // Current position (wraps)
     uint32_t qubit_count;
@@ -57,8 +58,8 @@ typedef struct {
     Fitness_Params fitness_params;
 } L2a_Runtime;
 
-// L2a API (unchanged)
-L2a_Runtime* l2a_init(uint32_t qubits, uint32_t instance_id);
+// L2a API (quantum-ready)
+L2a_Runtime* l2a_init(uint32_t qubits, uint32_t instance_id, Qubit_Backend_Type backend);
 void l2a_free(L2a_Runtime* r);
 
 void l2a_CCNOT(L2a_Runtime* r, uint8_t a, uint8_t b, uint8_t c);
@@ -247,7 +248,7 @@ typedef struct {
     L3b_Runtime* l3b;
 } Moop_Runtime;
 
-Moop_Runtime* moop_init(uint32_t qubits, uint32_t instance_id);
+Moop_Runtime* moop_init(uint32_t qubits, uint32_t instance_id, Qubit_Backend_Type backend);
 void moop_free(Moop_Runtime* moop);
 
 // Introspection API (NEW)

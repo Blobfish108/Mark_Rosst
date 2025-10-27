@@ -11,19 +11,20 @@
 // L2a: Tape-Loop Turing Machine (Enhancement 1)
 // ============================================================================
 
-L2a_Runtime* l2a_init(uint32_t qubits, uint32_t instance_id) {
+L2a_Runtime* l2a_init(uint32_t qubits, uint32_t instance_id, Qubit_Backend_Type backend) {
     L2a_Runtime* r = malloc(sizeof(L2a_Runtime));
     if (!r) return NULL;
 
-    r->qubits = calloc(qubits, 1);
-    if (!r->qubits) {
+    // Initialize backend-agnostic qubit state
+    r->qubit_state = qubit_init(qubits, backend);
+    if (!r->qubit_state) {
         free(r);
         return NULL;
     }
 
     r->tape = malloc(L1_TAPE_SIZE * sizeof(Tape_Entry));
     if (!r->tape) {
-        free(r->qubits);
+        qubit_free(r->qubit_state);
         free(r);
         return NULL;
     }
@@ -55,7 +56,7 @@ L2a_Runtime* l2a_init(uint32_t qubits, uint32_t instance_id) {
 }
 
 void l2a_free(L2a_Runtime* r) {
-    free(r->qubits);
+    qubit_free(r->qubit_state);
     free(r->tape);
     free(r);
 }
@@ -98,28 +99,22 @@ static void record_to_tape(L2a_Runtime* r, R_Cell cell) {
 // The 4 reversible primitives (with tape recording)
 
 void l2a_CCNOT(L2a_Runtime* r, uint8_t a, uint8_t b, uint8_t c) {
-    if (r->qubits[a] && r->qubits[b]) {
-        r->qubits[c] ^= 1;
-    }
+    qubit_CCNOT(r->qubit_state, a, b, c);
     record_to_tape(r, (R_Cell){0, a, b, c});
 }
 
 void l2a_CNOT(L2a_Runtime* r, uint8_t a, uint8_t b) {
-    if (r->qubits[a]) {
-        r->qubits[b] ^= 1;
-    }
+    qubit_CNOT(r->qubit_state, a, b);
     record_to_tape(r, (R_Cell){1, a, b, 0});
 }
 
 void l2a_NOT(L2a_Runtime* r, uint8_t a) {
-    r->qubits[a] ^= 1;
+    qubit_NOT(r->qubit_state, a);
     record_to_tape(r, (R_Cell){2, a, 0, 0});
 }
 
 void l2a_SWAP(L2a_Runtime* r, uint8_t a, uint8_t b) {
-    uint8_t t = r->qubits[a];
-    r->qubits[a] = r->qubits[b];
-    r->qubits[b] = t;
+    qubit_SWAP(r->qubit_state, a, b);
     record_to_tape(r, (R_Cell){3, a, b, 0});
 }
 
@@ -139,13 +134,13 @@ void l2a_restore(L2a_Runtime* r, uint32_t checkpoint) {
         // Move backward
         r->tape_head = (r->tape_head == 0) ? L1_TAPE_SIZE - 1 : r->tape_head - 1;
 
-        // Execute inverse
+        // Execute inverse using backend API (reversible gates are self-inverse)
         R_Cell c = r->tape[r->tape_head].cell;
         switch(c.gate) {
-            case 0: if (r->qubits[c.a] && r->qubits[c.b]) r->qubits[c.c] ^= 1; break;
-            case 1: if (r->qubits[c.a]) r->qubits[c.b] ^= 1; break;
-            case 2: r->qubits[c.a] ^= 1; break;
-            case 3: { uint8_t t = r->qubits[c.a]; r->qubits[c.a] = r->qubits[c.b]; r->qubits[c.b] = t; } break;
+            case 0: qubit_CCNOT(r->qubit_state, c.a, c.b, c.c); break;
+            case 1: qubit_CNOT(r->qubit_state, c.a, c.b); break;
+            case 2: qubit_NOT(r->qubit_state, c.a); break;
+            case 3: qubit_SWAP(r->qubit_state, c.a, c.b); break;
         }
 
         r->total_ops--;
@@ -203,9 +198,9 @@ float l2a_compute_fitness(L2a_Runtime* r, uint32_t index) {
 
     // Component 2: Qubit dependency (operations on non-zero qubits are "hotter")
     float qubit_activity = 0.0f;
-    if (entry->cell.a < r->qubit_count && r->qubits[entry->cell.a]) qubit_activity += 0.3f;
-    if (entry->cell.b < r->qubit_count && r->qubits[entry->cell.b]) qubit_activity += 0.3f;
-    if (entry->cell.c < r->qubit_count && r->qubits[entry->cell.c]) qubit_activity += 0.2f;
+    if (entry->cell.a < r->qubit_count && qubit_read(r->qubit_state, entry->cell.a)) qubit_activity += 0.3f;
+    if (entry->cell.b < r->qubit_count && qubit_read(r->qubit_state, entry->cell.b)) qubit_activity += 0.3f;
+    if (entry->cell.c < r->qubit_count && qubit_read(r->qubit_state, entry->cell.c)) qubit_activity += 0.2f;
 
     // Component 3: Gate type priority (CCNOT > CNOT > SWAP > NOT)
     float gate_priority = 0.0f;
@@ -356,7 +351,7 @@ void l2b_free(L2b_Runtime* r) {
 // Irreversible operations
 
 void l2b_AND(L2b_Runtime* r, uint8_t a, uint8_t b, uint8_t result) {
-    if (r->l2a->qubits[result]) l2a_NOT(r->l2a, result);
+    if (qubit_read(r->l2a->qubit_state, result)) l2a_NOT(r->l2a, result);
     l2a_CCNOT(r->l2a, a, b, result);
 }
 
@@ -370,7 +365,7 @@ void l2b_OR(L2b_Runtime* r, uint8_t a, uint8_t b, uint8_t result) {
 }
 
 void l2b_XOR(L2b_Runtime* r, uint8_t a, uint8_t b, uint8_t result) {
-    if (r->l2a->qubits[result]) l2a_NOT(r->l2a, result);
+    if (qubit_read(r->l2a->qubit_state, result)) l2a_NOT(r->l2a, result);
     l2a_CNOT(r->l2a, a, result);
     l2a_CNOT(r->l2a, b, result);
 }
@@ -632,12 +627,12 @@ L3_Proto* nl_parse_proto(NL_Parser* parser) {
 // Unified Runtime
 // ============================================================================
 
-Moop_Runtime* moop_init(uint32_t qubits, uint32_t instance_id) {
+Moop_Runtime* moop_init(uint32_t qubits, uint32_t instance_id, Qubit_Backend_Type backend) {
     Moop_Runtime* moop = malloc(sizeof(Moop_Runtime));
     if (!moop) return NULL;
     moop->instance_id = instance_id;
 
-    moop->l2a = l2a_init(qubits, instance_id);
+    moop->l2a = l2a_init(qubits, instance_id, backend);
     if (!moop->l2a) {
         free(moop);
         return NULL;

@@ -27,6 +27,13 @@ No ceremony. No syntactic noise. Just clear, readable computation.
 
 ## 🎯 Key Features
 
+### Quantum-Ready Architecture
+- **Classical by Default** - Runs on any conventional hardware (x86, ARM, RISC-V, microcontrollers)
+- **Quantum-Compatible by Design** - Built on reversible gates (CCNOT, CNOT, NOT, SWAP)
+- **Backend Abstraction** - Same code runs on classical, simulator, or quantum hardware
+- **Future-Proof** - Programs written today will run on quantum computers tomorrow without modification
+- **Zero Overhead** - Classical backend is as fast as native bit operations
+
 ### Language Design
 - **Natural Language Syntax** - Quorum's naturalism + Io's minimalism
 - **Structured English** - Code reads like plain English sentences

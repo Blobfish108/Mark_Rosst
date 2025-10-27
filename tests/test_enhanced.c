@@ -15,7 +15,7 @@
 void test_tape_loop() {
     printf("\n=== Test 1: Tape-Loop Turing Machine ===\n");
 
-    L2a_Runtime* r = l2a_init(4, 1);
+    L2a_Runtime* r = l2a_init(4, 1, QUBIT_BACKEND_CLASSICAL);
 
     // Execute 1100 operations (exceeds 1024 limit, should wrap)
     for (uint32_t i = 0; i < 1100; i++) {
@@ -79,7 +79,7 @@ void test_trinary_maybe() {
 void test_self_modification() {
     printf("\n=== Test 3: Self-Modification (Homoiconicity) ===\n");
 
-    L2a_Runtime* r = l2a_init(4, 2);
+    L2a_Runtime* r = l2a_init(4, 2, QUBIT_BACKEND_CLASSICAL);
 
     // Execute some operations
     l2a_NOT(r, 0);
@@ -124,7 +124,7 @@ void test_self_modification() {
 void test_natural_language_parser() {
     printf("\n=== Test 4: Natural Language Parser ===\n");
 
-    Moop_Runtime* moop = moop_init(8, 3);
+    Moop_Runtime* moop = moop_init(8, 3, QUBIT_BACKEND_CLASSICAL);
 
     // Parse actor definition
     NL_Source actor_source = {
@@ -184,7 +184,7 @@ void test_natural_language_parser() {
 void test_layer_segregation() {
     printf("\n=== Test 5: Layer Segregation (Reversible vs Irreversible) ===\n");
 
-    Moop_Runtime* moop = moop_init(8, 4);
+    Moop_Runtime* moop = moop_init(8, 4, QUBIT_BACKEND_CLASSICAL);
 
     // L2a operations are reversible (zero entropy)
     l2a_NOT(moop->l2a, 0);
@@ -210,7 +210,7 @@ void test_layer_segregation() {
 void test_integrated() {
     printf("\n=== Integrated Test: All Features Working Together ===\n");
 
-    Moop_Runtime* moop = moop_init(16, 5);
+    Moop_Runtime* moop = moop_init(16, 5, QUBIT_BACKEND_CLASSICAL);
 
     // 1. Execute operations that will wrap tape
     for (int i = 0; i < 1025; i++) {
