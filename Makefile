@@ -39,6 +39,11 @@ TEST_TARGET = $(BUILDDIR)/test_enhanced
 TEST_QUANTUM_SRCS = $(TESTDIR)/test_quantum_backends.c
 TEST_QUANTUM_TARGET = $(BUILDDIR)/test_quantum_backends
 
+# Example programs
+EXAMPLES_DIR = examples
+EXAMPLE_EVOLUTIONARY = $(BUILDDIR)/evolutionary_optimization
+EXAMPLE_LIVING_CODE = $(BUILDDIR)/living_code_demo
+
 .PHONY: all clean test test-quantum test-all examples help
 
 all: $(BUILDDIR) $(TEST_TARGET) $(TEST_QUANTUM_TARGET)
@@ -63,6 +68,15 @@ $(TEST_TARGET): $(TEST_SRCS) $(CORE_OBJS) | $(BUILDDIR)
 
 $(TEST_QUANTUM_TARGET): $(TEST_QUANTUM_SRCS) $(CORE_OBJS) | $(BUILDDIR)
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+$(EXAMPLE_EVOLUTIONARY): $(EXAMPLES_DIR)/evolutionary_optimization.c $(CORE_OBJS) | $(BUILDDIR)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+$(EXAMPLE_LIVING_CODE): $(EXAMPLES_DIR)/living_code_demo.c $(CORE_OBJS) | $(BUILDDIR)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+examples: $(EXAMPLE_EVOLUTIONARY) $(EXAMPLE_LIVING_CODE)
+	@echo "Examples built successfully"
 
 test: $(TEST_TARGET)
 	@echo "=== Running Enhanced Moop Test Suite ==="
@@ -89,6 +103,7 @@ help:
 	@echo "  test         - Run enhanced features test suite"
 	@echo "  test-quantum - Run quantum backend test suite"
 	@echo "  test-all     - Run all test suites"
+	@echo "  examples     - Build example programs"
 	@echo "  clean        - Remove build artifacts"
 	@echo "  help         - Show this message"
 	@echo ""
@@ -110,3 +125,13 @@ help:
 	@echo ""
 	@echo "  Run quantum tests:"
 	@echo "    make test-all"
+	@echo ""
+	@echo "Examples:"
+	@echo "  Build examples:"
+	@echo "    make examples"
+	@echo ""
+	@echo "  Run living code demo (recommended first):"
+	@echo "    ./build/living_code_demo"
+	@echo ""
+	@echo "  Run evolutionary optimization:"
+	@echo "    ./build/evolutionary_optimization"

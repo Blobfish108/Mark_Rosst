@@ -241,6 +241,21 @@ This makes Moop uniquely positioned for the **quantum transition** - your invest
 
 ## Quick Start
 
+### See It In Action
+
+```bash
+git clone https://github.com/Blobfish108/Mark_Rosst.git
+cd Mark_Rosst
+make examples
+./build/living_code_demo
+```
+
+This demo shows:
+- **Homoiconicity**: Reading and modifying code at runtime
+- **Reversibility**: Time-travel debugging with checkpoints
+- **Evolution**: Self-optimizing fitness-based pruning
+- **The Synergy**: Why this combination is unique
+
 ### Build
 
 ```bash
