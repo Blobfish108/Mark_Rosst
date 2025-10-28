@@ -435,6 +435,38 @@ Comprehensive test suite covering:
 
 Run with: `make test`
 
+## Related Projects
+
+### Trinity Vibe
+
+**[trinity-vibe](https://github.com/Blobfish108/trinity-vibe)** - Browser-based exploration of homoiconicity and structural reversibility
+
+Trinity Vibe and Moop share the same philosophical foundations but serve different purposes:
+
+**Shared Philosophy:**
+- Homoiconicity (code as data)
+- Structural reversibility (time-travel debugging)
+- Three-layer architecture (Functions/Actors/Prototypes)
+- Non-Von Neumann computational model
+
+**Trinity Vibe's Focus:**
+- Browser-based (JavaScript, no build step)
+- "Memory-as-computation" model
+- Interactive exploration and visualization
+- Web deployment, rapid prototyping
+
+**Moop's Focus:**
+- Native C implementation (~900 lines)
+- Quantum-ready reversible gates
+- Embedded systems (40KB footprint, no GC)
+- Production deployment, deterministic real-time
+
+**Think of them as:**
+- **Trinity Vibe**: Web-based laboratory for exploring reversible homoiconic programming
+- **Moop**: Production-ready implementation with quantum compatibility and embedded focus
+
+Both projects explore how reversibility + homoiconicity creates new programming paradigms. Trinity Vibe prioritizes accessibility and experimentation; Moop prioritizes performance and future-proofing.
+
 ## License
 
 MIT License - see [LICENSE](LICENSE)
