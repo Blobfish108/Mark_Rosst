@@ -1,0 +1,3 @@
+[submodule "implementations/trinity-vibe"]
+	path = implementations/trinity-vibe
+	url = https://github.com/Blobfish108/trinity-vibe.git
