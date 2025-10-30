@@ -8,7 +8,7 @@
 
 ### Moop (Unified Moop)
 
-**[Moop](https://github.com/Blobfish108/Miley)** - Quantum-ready C implementation with embedded systems focus
+**[Moop](https://github.com/Blobfish108/Miley-the-dog)** - Quantum-ready C implementation with embedded systems focus
 
 Moop and Trinity Vibe share the same philosophical foundations but serve different purposes:
 

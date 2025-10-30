@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**Repository:** Miley (named after a very good dog 🐕)
+**Repository:** Miley-the-dog (named after a very good dog 🐕)
 
 ## 🚀 Quick Start
 
@@ -24,7 +24,7 @@
 
 ### What's in This Repository
 
-**This repo (Miley) contains:**
+**This repo (Miley-the-dog) contains:**
 - **C Runtime Substrate** - Quantum-ready computational foundation
 - **Moop Language Specification** - Natural language syntax design
 - **Examples and Documentation**
@@ -282,8 +282,8 @@ This makes Moop uniquely positioned for the **quantum transition** - your invest
 ### See It In Action
 
 ```bash
-git clone https://github.com/Blobfish108/Miley.git
-cd Miley
+git clone https://github.com/Blobfish108/Miley-the-dog.git
+cd Miley-the-dog
 make examples
 ./build/living_code_demo
 ```

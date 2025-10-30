@@ -762,7 +762,7 @@ actor Calculator
 ## Try It
 
 ```bash
-git clone https://github.com/Blobfish108/Miley.git
+git clone https://github.com/Blobfish108/Miley-the-dog.git
 cd unified_moop
 make test
 ```
