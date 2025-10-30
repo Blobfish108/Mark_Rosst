@@ -282,8 +282,8 @@ This makes Moop uniquely positioned for the **quantum transition** - your invest
 ### See It In Action
 
 ```bash
-git clone https://github.com/Blobfish108/Miley-the-dog.git
-cd Miley-the-dog
+git clone https://github.com/Blobfish108/Miley-the-dog-.git
+cd Miley-the-dog-
 make examples
 ./build/living_code_demo
 ```

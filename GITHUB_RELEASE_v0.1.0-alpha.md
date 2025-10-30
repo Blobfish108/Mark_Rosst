@@ -37,8 +37,8 @@ Moop occupies a unique design space no other language fills:
 ## ⚡ Try It Now
 
 ```bash
-git clone https://github.com/Blobfish108/Miley-the-dog.git
-cd Miley-the-dog
+git clone https://github.com/Blobfish108/Miley-the-dog-.git
+cd Miley-the-dog-
 make examples
 ./build/living_code_demo
 ```
