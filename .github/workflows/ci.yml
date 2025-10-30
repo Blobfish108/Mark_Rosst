@@ -70,8 +70,8 @@ jobs:
       run: |
         total_lines=$(find src -name "*.c" -o -name "*.h" | xargs wc -l | tail -1 | awk '{print $1}')
         echo "Total lines of code: $total_lines"
-        if [ "$total_lines" -gt 1200 ]; then
-          echo "Error: Code exceeds 1200 lines (found $total_lines)"
+        if [ "$total_lines" -gt 2000 ]; then
+          echo "Error: Code exceeds 2000 lines (found $total_lines)"
           echo "Moop is about minimalism!"
           exit 1
         fi

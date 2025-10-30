@@ -6,7 +6,6 @@
 #include "moop_quantum_ready.h"
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 // ============================================================================
 // Classical Backend Implementation

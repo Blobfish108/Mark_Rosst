@@ -37,8 +37,8 @@ Moop occupies a unique design space no other language fills:
 ## ⚡ Try It Now
 
 ```bash
-git clone https://github.com/Blobfish108/Mark_Rosst.git
-cd Mark_Rosst
+git clone https://github.com/Blobfish108/Miley.git
+cd Miley
 make examples
 ./build/living_code_demo
 ```
@@ -334,7 +334,7 @@ Special thanks to Claude Code for collaborative development.
 
 *"Moop: Where code becomes a living, quantum-ready organism."*
 
-**Repository**: https://github.com/Blobfish108/Mark_Rosst
+**Repository**: https://github.com/Blobfish108/Miley
 **Release**: v0.1.0-alpha
 **Date**: October 2025
 **Author**: Mark Rosst

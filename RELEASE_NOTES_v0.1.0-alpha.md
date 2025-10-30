@@ -207,7 +207,7 @@ Moop combines **gate-based computational substrate** with **lean conventional me
 
 ### Build
 ```bash
-git clone https://github.com/Blobfish108/Mark_Rosst.git
+git clone https://github.com/Blobfish108/Miley.git
 cd unified_moop
 make test
 ```
@@ -315,4 +315,4 @@ Inspired by:
 **Production-ready alpha** - Core features complete, API stable, tests passing.
 
 For issues, questions, or contributions, visit:
-https://github.com/Blobfish108/Mark_Rosst.git
+https://github.com/Blobfish108/Miley.git

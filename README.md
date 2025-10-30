@@ -4,11 +4,17 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## 🚀 Try Moop NOW
+**Repository:** Miley (named after a very good dog 🐕)
 
-**Want to write and run Moop code immediately?**
+## 🚀 Quick Start
 
-➡️ **[Open Trinity Vibe](https://github.com/Blobfish108/trinity-vibe)** - Browser-based implementation with zero setup. Just open `index.html` and start coding.
+**Want to try Moop-like programming right now?**
+
+➡️ **[Trinity Vibe](https://github.com/Blobfish108/trinity-vibe)** - Related project: Moop semantics in JavaScript syntax. Zero setup, runs in browser immediately.
+
+**What's the relationship?**
+- **Moop** (this repo): The programming language with natural syntax
+- **Trinity Vibe**: Side project - same concepts (homoiconicity, reversibility), JavaScript syntax
 
 ---
 
@@ -16,12 +22,15 @@
 
 **This repo contains the C runtime substrate** - the quantum-ready computational foundation for embedded systems and future quantum hardware.
 
-### Two Implementations, One Language
+### What's in This Repository
 
-| Implementation | Status | Use Case | Link |
-|----------------|--------|----------|------|
-| **Trinity Vibe** | ✅ Complete | Browser, learning, prototyping | [github.com/Blobfish108/trinity-vibe](https://github.com/Blobfish108/trinity-vibe) |
-| **C Runtime** (this repo) | ✅ Runtime ready | Embedded, IoT, quantum research | You are here |
+**This repo (Miley) contains:**
+- **C Runtime Substrate** - Quantum-ready computational foundation
+- **Moop Language Specification** - Natural language syntax design
+- **Examples and Documentation**
+
+**Related Projects:**
+- **[Trinity Vibe](https://github.com/Blobfish108/trinity-vibe)** - Moop concepts in JavaScript syntax (separate repo, try it now!)
 
 ### This Repository (C Runtime) Provides:
 
@@ -273,8 +282,8 @@ This makes Moop uniquely positioned for the **quantum transition** - your invest
 ### See It In Action
 
 ```bash
-git clone https://github.com/Blobfish108/Mark_Rosst.git
-cd Mark_Rosst
+git clone https://github.com/Blobfish108/Miley.git
+cd Miley
 make examples
 ./build/living_code_demo
 ```
