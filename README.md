@@ -1,8 +1,37 @@
-# Unified Moop
+# Moop Programming Language
 
 **Code that reads like structured English • Quorum's naturalism + Io's minimalism**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+## 🚀 Try Moop NOW
+
+**Want to write and run Moop code immediately?**
+
+➡️ **[Open Trinity Vibe](https://github.com/Blobfish108/trinity-vibe)** - Browser-based implementation with zero setup. Just open `index.html` and start coding.
+
+---
+
+## 🎯 What This Repository Is
+
+**This repo contains the C runtime substrate** - the quantum-ready computational foundation for embedded systems and future quantum hardware.
+
+### Two Implementations, One Language
+
+| Implementation | Status | Use Case | Link |
+|----------------|--------|----------|------|
+| **Trinity Vibe** | ✅ Complete | Browser, learning, prototyping | [github.com/Blobfish108/trinity-vibe](https://github.com/Blobfish108/trinity-vibe) |
+| **C Runtime** (this repo) | ✅ Runtime ready | Embedded, IoT, quantum research | You are here |
+
+### This Repository (C Runtime) Provides:
+
+- Quantum-ready backend abstraction (classical/simulator/quantum)
+- ~1800 lines of pure C runtime
+- 40KB footprint, no garbage collector
+- Tape-loop Turing machine with evolutionary pruning
+- Perfect for embedded systems and real-time applications
+
+**Status**: Runtime complete and tested. For language parser/compiler, use Trinity Vibe.
 
 ## The Moop Experience
 
@@ -22,7 +51,7 @@ proto DatabaseConnection <- Object
 
 ## Overview
 
-Unified Moop combines natural language elegance with computational power through a **6-sublayer architecture** in ~900 lines of C:
+Unified Moop combines natural language elegance with computational power through a **6-sublayer architecture** in ~1800 lines of C:
 
 - **Quantum-Ready Architecture** - Classical by default, quantum-compatible by design
 - **Natural Language Syntax** - Code reads like structured English
@@ -107,7 +136,7 @@ Moop combines **gate-based computational substrate** with **lean conventional me
 - ✅ **No garbage collector** - No unpredictable GC pauses
 - ✅ **Deterministic behavior** - Pruning every 256 ops, O(1) fitness computation
 - ✅ **Fixed computational memory** - 1024-cell tape never grows
-- ✅ **Lean C implementation** - ~680 lines, compiles to bare metal
+- ✅ **Lean C implementation** - Core runtime ~950 lines, quantum backends ~700 lines
 - ✅ **Self-managing substrate** - Evolutionary pruning handles tape cleanup automatically
 
 ```moop
@@ -256,6 +285,8 @@ This demo shows:
 - **Evolution**: Self-optimizing fitness-based pruning
 - **The Synergy**: Why this combination is unique
 
+**Note:** This demo is written in C using the runtime APIs. **To write and run actual `.moop` language files, use [Trinity Vibe](https://github.com/Blobfish108/trinity-vibe)** (see "Try Moop NOW" section above).
+
 ### Build
 
 ```bash
@@ -305,7 +336,7 @@ actor Calculator
         tune_fitness(params)
 ```
 
-**Note:** This is Moop language syntax. The v0.1.0-alpha release includes a C implementation runtime. Full Moop parser/compiler coming in future releases.
+**Note:** This is Moop language syntax. **To run this code, use [Trinity Vibe](https://github.com/Blobfish108/trinity-vibe)** - a self-contained browser implementation with full parser/compiler/IDE. This repo provides the C runtime substrate for embedded systems; Trinity Vibe provides the complete language environment.
 
 ## Architecture
 
